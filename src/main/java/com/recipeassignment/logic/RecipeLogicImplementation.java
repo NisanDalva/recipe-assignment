@@ -23,9 +23,17 @@ public class RecipeLogicImplementation implements RecipeLogic {
 
     @Override
     public List<RecipeBoundary> getListOfRecipes(int offset, int number) {
-        
         String updatedUrl = this.url + this.apiKey + "&offset=" + offset +"&number=" + number;
         
+        ComplexSearchBoundary res = restTemplate.getForObject(updatedUrl, ComplexSearchBoundary.class);
+
+        return res.getResults();
+    }
+
+    @Override
+    public List<RecipeBoundary> searchByQuery(String query, int offset, int number) {
+        String updatedUrl = this.url + this.apiKey + "&query=" + query + "&offset=" + offset +"&number=" + number;
+
         ComplexSearchBoundary res = restTemplate.getForObject(updatedUrl, ComplexSearchBoundary.class);
 
         return res.getResults();

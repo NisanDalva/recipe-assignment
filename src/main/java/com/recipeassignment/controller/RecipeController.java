@@ -31,12 +31,25 @@ public class RecipeController {
 			path = "/all", 
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RecipeBoundary> getAllRecipes(
+    public List<RecipeBoundary> showRecipes(
         @RequestParam(name="offset", required = false, defaultValue = "0") int offset,
         @RequestParam(name="number", required = false, defaultValue = "10") int number
     ) {
         return this.recipeLogic.getListOfRecipes(offset, number);
     }
 
-    
+    @RequestMapping(
+        path="/search",
+        method=RequestMethod.GET,
+        produces=MediaType.APPLICATION_JSON_VALUE
+    )
+    public List<RecipeBoundary> SearchRecipeByText(
+        @RequestParam(name="query", required = true) String query,
+        @RequestParam(name="offset", required = false, defaultValue = "0") int offset,
+        @RequestParam(name="number", required = false, defaultValue = "10") int number
+    ) {
+        return this.recipeLogic.searchByQuery(query, offset, number);
+    }
+
+
 }
