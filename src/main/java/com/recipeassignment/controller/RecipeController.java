@@ -8,6 +8,7 @@ import com.recipeassignment.logic.RecipeLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,17 +40,18 @@ public class RecipeController {
     }
 
     @RequestMapping(
-        path="/search",
+        path="/search/{query}",
         method=RequestMethod.GET,
         produces=MediaType.APPLICATION_JSON_VALUE
     )
     public List<RecipeBoundary> SearchRecipeByText(
-        @RequestParam(name="query", required = true) String query,
+        @PathVariable("query") String  query,
         @RequestParam(name="offset", required = false, defaultValue = "0") int offset,
         @RequestParam(name="number", required = false, defaultValue = "10") int number
     ) {
         return this.recipeLogic.searchByQuery(query, offset, number);
     }
 
+    
 
 }
