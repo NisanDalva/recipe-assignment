@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.recipeassignment.boundaries.ComplexSearchBoundary;
 import com.recipeassignment.boundaries.RecipeBoundary;
+import com.recipeassignment.boundaries.RecipeDetailsBoundary;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class RecipeLogicImplementation implements RecipeLogic {
     @Value("${api.key}")
     private String apiKey;
 
-    private String url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=";
+    private String baseUrl = "https://api.spoonacular.com/recipes/";
     
     public RecipeLogicImplementation() {
         this.restTemplate = new RestTemplate();
@@ -23,7 +24,7 @@ public class RecipeLogicImplementation implements RecipeLogic {
 
     @Override
     public List<RecipeBoundary> getListOfRecipes(int offset, int number) {
-        String updatedUrl = this.url + this.apiKey + "&offset=" + offset +"&number=" + number;
+        String updatedUrl = this.baseUrl + "complexSearch?apiKey=" + this.apiKey + "&offset=" + offset +"&number=" + number;
         
         ComplexSearchBoundary res = restTemplate.getForObject(updatedUrl, ComplexSearchBoundary.class);
 
@@ -32,14 +33,18 @@ public class RecipeLogicImplementation implements RecipeLogic {
 
     @Override
     public List<RecipeBoundary> searchByQuery(String query, int offset, int number) {
-        String updatedUrl = this.url + this.apiKey + "&query=" + query + "&offset=" + offset +"&number=" + number;
+        String updatedUrl = this.baseUrl + "complexSearch?apiKey=" + this.apiKey + "&query=" + query + "&offset=" + offset +"&number=" + number;
 
         ComplexSearchBoundary res = restTemplate.getForObject(updatedUrl, ComplexSearchBoundary.class);
 
         return res.getResults();
     }
 
-    
+    public RecipeDetailsBoundary getRecipeDetailsById(int id) {
+        String updatedUrl = this.baseUrl + "informationBulk?apiKey=" + this.apiKey + "&ids=" + id;
+
+        return restTemplate.getForObject(updatedUrl, RecipeDetailsBoundary[].class)[0];
+    }
 
     
 }

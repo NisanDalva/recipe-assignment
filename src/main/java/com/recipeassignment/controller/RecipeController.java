@@ -3,6 +3,7 @@ package com.recipeassignment.controller;
 import java.util.List;
 
 import com.recipeassignment.boundaries.RecipeBoundary;
+import com.recipeassignment.boundaries.RecipeDetailsBoundary;
 import com.recipeassignment.logic.RecipeLogic;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,16 @@ public class RecipeController {
     }
 
     
+    @RequestMapping(
+        path="/{id}",
+        method=RequestMethod.GET,
+        produces=MediaType.APPLICATION_JSON_VALUE
+    )
+    public RecipeDetailsBoundary showRecipeDetailsById(
+        @PathVariable("id") int id
+    ) {
+        return this.recipeLogic.getRecipeDetailsById(id);
+    }
+
 
 }
