@@ -22,7 +22,7 @@ public class RecipeLogicImplementation implements RecipeLogic {
     private RecipeDao recipeDao;
     
     @Value("${api.key}")
-    private String apiKey;
+    private String apiKey;  //TODO: READ API KEY FROM SYS ENVIRONMENT!!
 
     private String baseUrl = "https://api.spoonacular.com/recipes/";
     
@@ -59,7 +59,7 @@ public class RecipeLogicImplementation implements RecipeLogic {
         return restTemplate.getForObject(updatedUrl, RecipeDetailsBoundary[].class)[0];
     }
 
-    @Transactional
+    @Transactional(readOnly=true)
     public void markRecipeAsFavorite(int recipeId) {
         String id = UUID.randomUUID().toString();
 
@@ -72,7 +72,7 @@ public class RecipeLogicImplementation implements RecipeLogic {
         this.recipeDao.save(entity);
     }
 
-    @Transactional
+    @Transactional(readOnly=true)
     public void unmarkRecipeAsFavorite(int recipeId) {
         RecipeEntity entity = this.recipeDao.findByRecipeId(recipeId);
 
@@ -80,7 +80,7 @@ public class RecipeLogicImplementation implements RecipeLogic {
         this.recipeDao.save(entity);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional
     public List<RecipeDetailsBoundary> getAllFavoriteRecipes(int page, int size) {
         List<RecipeEntity> entities = this.recipeDao.findAllByFavorite(true, PageRequest.of(page, size));
         List<RecipeDetailsBoundary> rv = new ArrayList<>();
