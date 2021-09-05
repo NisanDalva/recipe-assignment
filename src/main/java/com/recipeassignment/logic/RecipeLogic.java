@@ -11,4 +11,12 @@ public interface RecipeLogic {
     public List<RecipeBoundary> searchByQuery(String query, int offset, int number);
 
     public RecipeDetailsBoundary getRecipeDetailsById(int id);
+
+    public void markRecipeAsFavorite(int recipeId);
+
+    public void unmarkRecipeAsFavorite(int recipeId);
+
+    public List<RecipeDetailsBoundary> getAllFavoriteRecipes(int page, int size);
+
+    public void deleteAllFavorites();
 }

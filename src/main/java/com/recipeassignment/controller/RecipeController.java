@@ -59,11 +59,44 @@ public class RecipeController {
         method=RequestMethod.GET,
         produces=MediaType.APPLICATION_JSON_VALUE
     )
-    public RecipeDetailsBoundary showRecipeDetailsById(
-        @PathVariable("id") int id
-    ) {
+    public RecipeDetailsBoundary showRecipeDetailsById(@PathVariable("id") int id) {
         return this.recipeLogic.getRecipeDetailsById(id);
     }
 
 
+    @RequestMapping(
+        path="/{id}",
+        method=RequestMethod.POST
+    )
+    public void setRecipeAsFavorites(@PathVariable("id") int id) {
+        this.recipeLogic.markRecipeAsFavorite(id);
+    }
+
+    @RequestMapping(
+        path="/{id}",
+        method=RequestMethod.PUT
+    )
+    public void removeRecipeFromFavorite(@PathVariable("id") int id) {
+        this.recipeLogic.unmarkRecipeAsFavorite(id);
+    }
+
+    @RequestMapping(
+        path="/allFavorites",
+        method=RequestMethod.GET,
+        produces=MediaType.APPLICATION_JSON_VALUE
+    )
+    public List<RecipeDetailsBoundary> getAllFavorites(
+		@RequestParam(name="page", required = false, defaultValue = "0")  int page,
+        @RequestParam(name="size", required = false, defaultValue = "5") int size
+    ) {
+        return this.recipeLogic.getAllFavoriteRecipes(page, size);
+    }
+
+    @RequestMapping(
+        path="/allFavorites",
+        method=RequestMethod.DELETE
+    )
+    public void deleteAllFavorites() {
+        this.recipeLogic.deleteAllFavorites();
+    }
 }
