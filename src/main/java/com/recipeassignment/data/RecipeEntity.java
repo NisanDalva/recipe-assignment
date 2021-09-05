@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="FAVORIES")
+@Table(name="FAVORITES")
 public class RecipeEntity {
     private String id;
     private int recipeId;
@@ -39,7 +39,7 @@ public class RecipeEntity {
     public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
     }
-    
+
     public Boolean getFavorite() {
         return favorite;
     }
