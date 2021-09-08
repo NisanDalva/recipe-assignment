@@ -3,26 +3,22 @@ package com.recipeassignment.controller;
 import java.util.List;
 
 import com.recipeassignment.boundaries.RecipeBoundary;
-import com.recipeassignment.boundaries.RecipeDetailsBoundary;
 import com.recipeassignment.logic.RecipeLogic;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/recipe")
+@RequestMapping("/recipes")
 public class RecipeController {
     
     private RecipeLogic recipeLogic;
-
-    @Value("${api.key}")
-    private String apiKey;
 
     @Autowired
     public void setRecipeLogic(RecipeLogic recipeLogic) {
@@ -30,54 +26,42 @@ public class RecipeController {
     }
 
     @RequestMapping(
-			path = "/all", 
+			path = "/search", 
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RecipeBoundary> showRecipes(
-        @RequestParam(name="offset", required = false, defaultValue = "0") int offset,
-        @RequestParam(name="number", required = false, defaultValue = "10") int number
+        @RequestParam(name = "q", required = false, defaultValue = "") String query, //empty query means showing all recipes
+        @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+        @RequestParam(name = "number", required = false, defaultValue = "2") int number
     ) {
-        return this.recipeLogic.getListOfRecipes(offset, number);
+        return this.recipeLogic.getListOfRecipes(query, offset, number);
     }
 
-    @RequestMapping(
-        path="/search/{query}",
-        method=RequestMethod.GET,
-        produces=MediaType.APPLICATION_JSON_VALUE
-    )
-    public List<RecipeBoundary> SearchRecipeByText(
-        @PathVariable("query") String  query,
-        @RequestParam(name="offset", required = false, defaultValue = "0") int offset,
-        @RequestParam(name="number", required = false, defaultValue = "10") int number
-    ) {
-        return this.recipeLogic.searchByQuery(query, offset, number);
-    }
-
-    
     @RequestMapping(
         path="/{id}",
         method=RequestMethod.GET,
         produces=MediaType.APPLICATION_JSON_VALUE
     )
-    public RecipeDetailsBoundary showRecipeDetailsById(@PathVariable("id") int id) {
+    public RecipeBoundary showRecipeDetailsById(@PathVariable("id") int id) {
         return this.recipeLogic.getRecipeDetailsById(id);
     }
 
-
     @RequestMapping(
-        path="/{id}",
-        method=RequestMethod.POST
+        path="/addToFavorites",
+        method=RequestMethod.POST,
+        consumes=MediaType.APPLICATION_JSON_VALUE
     )
-    public void setRecipeAsFavorites(@PathVariable("id") int id) {
-        this.recipeLogic.markRecipeAsFavorite(id);
+    public void setRecipeAsFavorites(@RequestBody RecipeBoundary recipe) {
+        this.recipeLogic.markRecipeAsFavorite(recipe);
     }
 
     @RequestMapping(
-        path="/{id}",
-        method=RequestMethod.PUT
+        path="/removeFromFavorites",
+        method=RequestMethod.PUT,
+        consumes=MediaType.APPLICATION_JSON_VALUE
     )
-    public void removeRecipeFromFavorite(@PathVariable("id") int id) {
-        this.recipeLogic.unmarkRecipeAsFavorite(id);
+    public void removeRecipeFromFavorite(@RequestBody RecipeBoundary recipe) {
+        this.recipeLogic.unmarkRecipeAsFavorite(recipe);
     }
 
     @RequestMapping(
@@ -85,9 +69,9 @@ public class RecipeController {
         method=RequestMethod.GET,
         produces=MediaType.APPLICATION_JSON_VALUE
     )
-    public List<RecipeDetailsBoundary> getAllFavorites(
-		@RequestParam(name="page", required = false, defaultValue = "0")  int page,
-        @RequestParam(name="size", required = false, defaultValue = "5") int size
+    public List<RecipeBoundary> getAllFavorites(
+		@RequestParam(name = "page", required = false, defaultValue = "0")  int page,
+        @RequestParam(name = "size", required = false, defaultValue = "5") int size
     ) {
         return this.recipeLogic.getAllFavoriteRecipes(page, size);
     }

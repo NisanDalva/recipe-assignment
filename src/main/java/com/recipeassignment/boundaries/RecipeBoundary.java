@@ -1,7 +1,6 @@
 package com.recipeassignment.boundaries;
 
-
-import java.util.Map;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -9,22 +8,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class RecipeBoundary {
     private Integer id;
     private String title;
+    private String sourceUrl;
     private String image;
     private String imageType;
-    // private NutritionBoundary nutrition;
-
-    private Map<String, Object> moreDetailes;
-
+    private String summary;
+    private List<String> cuisines;
+    private List<String> dishTypes;
+    private List<String> diets;
+    private List<AnalyzedInstructionsBoundary> analyzedInstructions;
 
     public RecipeBoundary() {
-    }
-
-    public RecipeBoundary(Integer id, String title, String image, String imageType, Map<String, Object> moreDetailes) {
-        this.id = id;
-        this.title = title;
-        this.image = image;
-        this.imageType = imageType;
-        this.moreDetailes = moreDetailes;
     }
 
     public Integer getId() {
@@ -43,6 +36,14 @@ public class RecipeBoundary {
         this.title = title;
     }
 
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
+
     public String getImage() {
         return image;
     }
@@ -59,18 +60,50 @@ public class RecipeBoundary {
         this.imageType = imageType;
     }
 
-    public Map<String, Object> getNutrition() {
-        return moreDetailes;
+    public String getSummary() {
+        return summary;
     }
 
-    public void setNutrition(Map<String, Object> moreDetailes) {
-        this.moreDetailes = moreDetailes;
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public List<String> getCuisines() {
+        return cuisines;
+    }
+
+    public void setCuisines(List<String> cuisines) {
+        this.cuisines = cuisines;
+    }
+
+    public List<String> getDishTypes() {
+        return dishTypes;
+    }
+
+    public void setDishTypes(List<String> dishTypes) {
+        this.dishTypes = dishTypes;
+    }
+
+    public List<String> getDiets() {
+        return diets;
+    }
+
+    public void setDiets(List<String> diets) {
+        this.diets = diets;
+    }
+
+    public List<AnalyzedInstructionsBoundary> getAnalyzedInstructions() {
+        return analyzedInstructions;
+    }
+
+    public void setAnalyzedInstructions(List<AnalyzedInstructionsBoundary> analyzedInstructions) {
+        this.analyzedInstructions = analyzedInstructions;
     }
 
     @Override
     public String toString() {
-        return "RecipeBoundary [id=" + id + ", image=" + image + ", imageType=" + imageType + ", nutrition=" + moreDetailes
-                + ", title=" + title + "]";
+        return "RecipeBoundary [analyzedInstructions=" + analyzedInstructions + ", cuisines=" + cuisines + ", diets="
+                + diets + ", dishTypes=" + dishTypes + ", id=" + id + ", image=" + image + ", imageType=" + imageType
+                + ", sourceUrl=" + sourceUrl + ", summary=" + summary + ", title=" + title + "]";
     }
-    
 }
