@@ -13,13 +13,6 @@ public class ComplexSearchBoundary {
 
     public ComplexSearchBoundary() {
     }
-    
-    public ComplexSearchBoundary(Integer offset, Integer number, Integer totalResults, List<RecipeBoundary> results) {
-        this.offset = offset;
-        this.number = number;
-        this.totalResults = totalResults;
-        this.results = results;
-    }
 
     public Integer getOffset() {
         return this.offset;
