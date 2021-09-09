@@ -31,10 +31,13 @@ public class RecipeController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RecipeBoundary> showRecipes(
         @RequestParam(name = "q", required = false, defaultValue = "") String query, //empty query means showing all recipes
+        @RequestParam(name = "cuisine", required = false, defaultValue = "") String cuisine,
+        @RequestParam(name = "diet", required = false, defaultValue = "") String diet,
+        @RequestParam(name = "type", required = false, defaultValue = "") String type,
         @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
         @RequestParam(name = "number", required = false, defaultValue = "2") int number
     ) {
-        return this.recipeLogic.getListOfRecipes(query, offset, number);
+        return this.recipeLogic.getListOfRecipes(query, cuisine, diet, type, offset, number);
     }
 
     @RequestMapping(

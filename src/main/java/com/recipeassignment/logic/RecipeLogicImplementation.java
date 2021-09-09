@@ -37,9 +37,10 @@ public class RecipeLogicImplementation implements RecipeLogic {
     }
 
     @Override
-    public List<RecipeBoundary> getListOfRecipes(String query, int offset, int number) {
+    public List<RecipeBoundary> getListOfRecipes(String query, String cuisine, String diet, String type, int offset, int number) {
         String updatedUrl = this.BASE_URL + "complexSearch?apiKey=" + this.apiKey + 
-        "&addRecipeInformation=true" + "&query=" + query + "&offset=" + offset +"&number=" + number;
+        "&addRecipeInformation=true" + "&query=" + query + "&cuisine=" + cuisine + 
+        "&diet=" + diet + "&type=" + type + "&offset=" + offset +"&number=" + number;
         
         ComplexSearchBoundary response = restTemplate.getForObject(updatedUrl, ComplexSearchBoundary.class);
 
@@ -85,7 +86,8 @@ public class RecipeLogicImplementation implements RecipeLogic {
             entity.setFavorite(false);
             this.recipeDao.save(entity);
         } else
-            throw new RecipeNotFoundException("Could not find recipe to unmark as favorite by id: " + recipe.getId()); // throws 404 NOT_FOUND instead of 500
+            // throws 404 NOT_FOUND instead of 500
+            throw new RecipeNotFoundException("Could not find recipe to unmark as favorite by id: " + recipe.getId());
 
         // entity.setFavorite(false);
         // this.recipeDao.save(entity);

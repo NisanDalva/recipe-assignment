@@ -10,7 +10,6 @@ public class StepsBoundary {
     private String step;
     private List<IngredientsBoundary> ingredients;
     private List<EquipmentBoundary> equipment;
-    private LengthBoundary length;
     
     public StepsBoundary() {
     }
@@ -47,18 +46,10 @@ public class StepsBoundary {
         this.equipment = equipment;
     }
 
-    public LengthBoundary getLength() {
-        return length;
-    }
-
-    public void setLength(LengthBoundary length) {
-        this.length = length;
-    }
-
     @Override
     public String toString() {
-        return "StepsBoundary [equipment=" + equipment + ", ingredients=" + ingredients + ", length=" + length
-                + ", number=" + number + ", step=" + step + "]";
+        return "StepsBoundary [equipment=" + equipment + ", ingredients=" + ingredients +
+                ", number=" + number + ", step=" + step + "]";
     }
 
 }

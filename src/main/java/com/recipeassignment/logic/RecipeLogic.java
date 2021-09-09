@@ -6,9 +6,7 @@ import com.recipeassignment.boundaries.RecipeBoundary;
 // import com.recipeassignment.boundaries.RecipeDetailsBoundary;
 
 public interface RecipeLogic {
-    public List<RecipeBoundary> getListOfRecipes(String query, int offset, int number);
-
-    // public List<RecipeBoundary> searchByQuery(String query, int offset, int number);
+    public List<RecipeBoundary> getListOfRecipes(String query, String cuisine, String diet, String type, int offset, int number);
 
     public RecipeBoundary getRecipeDetailsById(int id);
 
