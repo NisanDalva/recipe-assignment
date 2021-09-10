@@ -11,7 +11,6 @@ import com.recipeassignment.data.RecipeEntity;
 import com.recipeassignment.exceptions.RecipeNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +21,12 @@ public class RecipeLogicImplementation implements RecipeLogic {
     private RestTemplate restTemplate;
     private RecipeDao recipeDao;
     
-    @Value("${api.key}")
-    private String apiKey;  //TODO: READ API KEY FROM SYSTEM ENVIRONMENT!!
-
+    /*
+        disable this comment to read the api key from 'application.propreties' file
+        and comment the 'apiKey' in the constructor below
+    */
+    // @Value("${api.key}") //TODO: READ API KEY FROM SYSTEM ENVIRONMENT!!
+    private String apiKey;
     private final String BASE_URL = "https://api.spoonacular.com/recipes/";
     
     @Autowired
@@ -34,6 +36,8 @@ public class RecipeLogicImplementation implements RecipeLogic {
 
     public RecipeLogicImplementation() {
         this.restTemplate = new RestTemplate();
+        // since the api key is a private key, cannot be on the repository. read it from the system environment variables
+        apiKey = System.getenv("API_KEY_SPOONACULAR");
     }
 
     @Override
