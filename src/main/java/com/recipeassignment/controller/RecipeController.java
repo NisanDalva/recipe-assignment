@@ -35,7 +35,7 @@ public class RecipeController {
         @RequestParam(name = "diet", required = false, defaultValue = "") String diet,
         @RequestParam(name = "type", required = false, defaultValue = "") String type,
         @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-        @RequestParam(name = "number", required = false, defaultValue = "2") int number
+        @RequestParam(name = "number", required = false, defaultValue = "5") int number
     ) {
         return this.recipeLogic.getListOfRecipes(query, cuisine, diet, type, offset, number);
     }
