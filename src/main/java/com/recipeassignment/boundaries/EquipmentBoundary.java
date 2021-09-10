@@ -49,6 +49,4 @@ public class EquipmentBoundary {
         return "EquipmentBoundary [id=" + id + ", image=" + image + ", localizedName=" + localizedName + ", name="
                 + name + "]";
     }
-
-    
 }

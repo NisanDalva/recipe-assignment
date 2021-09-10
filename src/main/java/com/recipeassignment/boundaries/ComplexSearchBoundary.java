@@ -51,6 +51,4 @@ public class ComplexSearchBoundary {
         return "ComplexSearchBoundary [number=" + number + ", offset=" + offset + ", results=" + results
                 + ", totalResults=" + totalResults + "]";
     }
-
-
 }

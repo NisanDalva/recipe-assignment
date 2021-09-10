@@ -32,6 +32,4 @@ public class AnalyzedInstructionsBoundary {
     public String toString() {
         return "AnalyzedInstructionsBoundary [name=" + name + ", steps=" + steps + "]";
     }
-
-    
 }

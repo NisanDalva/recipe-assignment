@@ -5,7 +5,6 @@ import Recipe from "./components/Recipe";
 const App = () => {
   const [allRecipes, setAllRecipes] = useState([]); // save the recipes as a list
   const [query, setQuery] = useState(""); // will be update in real time when user is writing
-  // const [finalSearch, setFinalSearch] = useState(""); // will be update only when user clicks on submit
   const [checkedFavoritesValue, setCheckedFavoritesValue] = useState(false); // if true - showing the favorite list
 
   const [cuisine, setCuisine] = useState("");
@@ -54,7 +53,6 @@ const App = () => {
     const response = await fetch("/allFavorites", { mode: "no-cors" });
     const data = await response.json();
     setAllRecipes(data);
-    console.log(data);
   };
 
   const handleDiets = (e) => {
@@ -86,7 +84,6 @@ const App = () => {
           <input
             type="checkbox"
             onChange={handleFavorites}
-            //   onClick={handleFavorites}
             checked={checkedFavoritesValue}
           />
           Show Favorites

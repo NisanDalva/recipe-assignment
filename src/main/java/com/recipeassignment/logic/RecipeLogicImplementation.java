@@ -68,7 +68,6 @@ public class RecipeLogicImplementation implements RecipeLogic {
         
         } else { // if is not, adds new entity to DB
             String id = UUID.randomUUID().toString();
-    
             RecipeEntity entity = new RecipeEntity();
     
             entity.setId(id);
@@ -77,12 +76,10 @@ public class RecipeLogicImplementation implements RecipeLogic {
     
             this.recipeDao.save(entity);
         }
-
     }
 
     @Transactional
     public void unmarkRecipeAsFavorite(RecipeBoundary recipe) {
-        // RecipeEntity entity = this.recipeDao.findByRecipeId(recipe.getId());
         Optional<RecipeEntity> op = this.recipeDao.findByRecipeId(recipe.getId());
 
         if (op.isPresent()) {
@@ -92,9 +89,6 @@ public class RecipeLogicImplementation implements RecipeLogic {
         } else
             // throws 404 NOT_FOUND instead of 500
             throw new RecipeNotFoundException("Could not find recipe to unmark as favorite by id: " + recipe.getId());
-
-        // entity.setFavorite(false);
-        // this.recipeDao.save(entity);
     }
 
     @Transactional(readOnly=true)
@@ -112,5 +106,4 @@ public class RecipeLogicImplementation implements RecipeLogic {
     public void deleteAllFavorites() {
         this.recipeDao.deleteAll();
     }
-
 }

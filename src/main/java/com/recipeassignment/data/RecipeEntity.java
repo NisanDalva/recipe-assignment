@@ -47,5 +47,4 @@ public class RecipeEntity {
     public void setFavorite(Boolean favorite) {
         this.favorite = favorite;
     }
-
 }

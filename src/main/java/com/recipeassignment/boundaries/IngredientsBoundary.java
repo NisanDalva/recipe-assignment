@@ -49,5 +49,4 @@ public class IngredientsBoundary {
         return "IngredientsBoundary [id=" + id + ", image=" + image + ", localizedName=" + localizedName + ", name="
                 + name + "]";
     }
-
 }

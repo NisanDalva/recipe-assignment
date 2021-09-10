@@ -51,5 +51,4 @@ public class StepsBoundary {
         return "StepsBoundary [equipment=" + equipment + ", ingredients=" + ingredients +
                 ", number=" + number + ", step=" + step + "]";
     }
-
 }
