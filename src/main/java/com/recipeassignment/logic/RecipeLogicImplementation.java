@@ -46,7 +46,7 @@ public class RecipeLogicImplementation implements RecipeLogic {
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setHttpClient(httpClient);
 
-        this.restTemplate = new RestTemplate();
+        this.restTemplate = new RestTemplate(requestFactory);
 
         /**
          * since the api key is a private key, cannot be on the repository. read it from
