@@ -1,4 +1,5 @@
 package com.recipeassignment.logic;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +11,12 @@ import com.recipeassignment.data.RecipeDao;
 import com.recipeassignment.data.RecipeEntity;
 import com.recipeassignment.exceptions.RecipeNotFoundException;
 
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -20,32 +25,43 @@ import org.springframework.web.client.RestTemplate;
 public class RecipeLogicImplementation implements RecipeLogic {
     private RestTemplate restTemplate;
     private RecipeDao recipeDao;
-    
-    /*
-        disable this comment to read the api key from 'application.propreties' file
-        and comment the 'apiKey' in the constructor below
-    */
-    // @Value("${api.key}") //TODO: READ API KEY FROM SYSTEM ENVIRONMENT!!
+
+    /**
+     * disable this comment to read the api key from 'application.propreties' file
+     * and comment the 'apiKey' in the constructor below
+     */
+    // @Value("${api.key}")
     private String apiKey;
     private final String BASE_URL = "https://api.spoonacular.com/recipes/";
-    
+
     @Autowired
     public void setRecipeDao(RecipeDao recipeDao) {
         this.recipeDao = recipeDao;
     }
 
     public RecipeLogicImplementation() {
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
+                .build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setHttpClient(httpClient);
+
         this.restTemplate = new RestTemplate();
-        // since the api key is a private key, cannot be on the repository. read it from the system environment variables
+
+        /**
+         * since the api key is a private key, cannot be on the repository. read it from
+         * the system environment variables
+         */
         apiKey = System.getenv("API_KEY_SPOONACULAR");
     }
 
     @Override
-    public List<RecipeBoundary> getListOfRecipes(String query, String cuisine, String diet, String type, int offset, int number) {
-        String updatedUrl = this.BASE_URL + "complexSearch?apiKey=" + this.apiKey + 
-        "&addRecipeInformation=true" + "&query=" + query + "&cuisine=" + cuisine + 
-        "&diet=" + diet + "&type=" + type + "&offset=" + offset +"&number=" + number;
-        
+    public List<RecipeBoundary> getListOfRecipes(String query, String cuisine, String diet, String type, int offset,
+            int number) {
+        String updatedUrl = this.BASE_URL + "complexSearch?apiKey=" + this.apiKey + "&addRecipeInformation=true"
+                + "&query=" + query + "&cuisine=" + cuisine + "&diet=" + diet + "&type=" + type + "&offset=" + offset
+                + "&number=" + number;
+
         ComplexSearchBoundary response = restTemplate.getForObject(updatedUrl, ComplexSearchBoundary.class);
 
         return response.getResults();
@@ -61,19 +77,19 @@ public class RecipeLogicImplementation implements RecipeLogic {
     public void markRecipeAsFavorite(RecipeBoundary recipe) {
         Optional<RecipeEntity> op = this.recipeDao.findByRecipeId(recipe.getId());
 
-        if(op.isPresent()) { // if recipe marked before, just update the entity
+        if (op.isPresent()) { // if recipe marked before, just update the entity
             RecipeEntity entity = op.get();
             entity.setFavorite(true);
             this.recipeDao.save(entity);
-        
+
         } else { // if is not, adds new entity to DB
             String id = UUID.randomUUID().toString();
             RecipeEntity entity = new RecipeEntity();
-    
+
             entity.setId(id);
             entity.setRecipeId(recipe.getId());
             entity.setFavorite(true);
-    
+
             this.recipeDao.save(entity);
         }
     }
@@ -91,11 +107,11 @@ public class RecipeLogicImplementation implements RecipeLogic {
             throw new RecipeNotFoundException("Could not find recipe to unmark as favorite by id: " + recipe.getId());
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public List<RecipeBoundary> getAllFavoriteRecipes(int page, int size) {
         List<RecipeEntity> entities = this.recipeDao.findAllByFavorite(true, PageRequest.of(page, size));
         List<RecipeBoundary> rv = new ArrayList<>();
-        
+
         for (RecipeEntity entity : entities)
             rv.add(this.getRecipeDetailsById(entity.getRecipeId()));
 
