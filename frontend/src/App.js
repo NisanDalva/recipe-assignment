@@ -19,7 +19,7 @@ const App = () => {
 
   const getListOfRecipes = async (query, cuisine, diet, type) => {
     const response = await fetch(
-      `/search?q=${query}&cuisine=${cuisine}&diet=${diet}&type=${type}`,
+      `/recipes/search?q=${query}&cuisine=${cuisine}&diet=${diet}&type=${type}`,
       {
         mode: "no-cors",
       }
@@ -50,7 +50,7 @@ const App = () => {
   };
 
   const getFavoritesRecipes = async () => {
-    const response = await fetch("/allFavorites", { mode: "no-cors" });
+    const response = await fetch("/recipes/allFavorites", { mode: "no-cors" });
     const data = await response.json();
     setAllRecipes(data);
   };

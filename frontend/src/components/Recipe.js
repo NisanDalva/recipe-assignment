@@ -28,7 +28,7 @@ const Recipe = ({ recipeId, title, summary, analyzedInstructions, image }) => {
     const path = !checkedValue ? "addToFavorites" : "removeFromFavorites";
     const method = !checkedValue ? "POST" : "PUT";
 
-    fetch(path, {
+    fetch(`/recipes/${path}`, {
       method: method,
       headers: {
         "Content-Type": "application/json",
